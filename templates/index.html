@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}" />
+<script type="text/javascript" src="{{ url_for('static', filename='left.js') }}"></script>
+
+<title>菜鸟</title>
+</head>
+<body>
+<div id="top">
+sasdasdas
+</div>
+
+<div id="left">
+    <nav id="nav">
+     <ul>
+         <li class="act" id="a_page" onclick="all_job()">全部任务</li>
+         <li id="t_page" onclick="today_job()">今日任务</li>
+         <li id="r_page" onclick="running_job()">正在运行</li>
+     </ul>
+    </nav>
+
+    <div id="all_job" style="display: block">
+    <div class="ui-tab">
+        <!-- 具体消息内容 -->
+    </div>
+    <div class="paging">
+        <!-- 分页布局-->
+        <table>
+            <tr class="page-font">
+                <td><button class="firstPage" type="button" onclick="page_click(this)">首页</button>&nbsp;|&nbsp;</td>
+                <td><button class="beforePage" type="button" onclick="page_click(this)">上一页</button>&nbsp;|&nbsp;</td>
+                <td>第<input type="button" class="currentPage" value="1" readonly="readonly">页</td>
+                <td>共<input type="button" class="totalPage" value="10" readonly="readonly">页</td>
+                <td>&nbsp;|&nbsp;<button class="nextPage" type="button" onclick="page_click(this)">下一页</button></td>
+                <td>&nbsp;|&nbsp;<button class="lastPage" type="button" onclick="page_click(this)">尾页</button></td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+    <div id="today_job" style="display: none">
+    <div class="ui-tab">
+        <!-- 具体消息内容 -->
+    </div>
+    <div class="paging">
+        <!-- 分页布局-->
+        <table>
+            <tr class="page-font">
+                <td><button class="firstPage" type="button" onclick="page_click(this)">首页</button>&nbsp;|&nbsp;</td>
+                <td><button class="beforePage" type="button" onclick="page_click(this)">上一页</button>&nbsp;|&nbsp;</td>
+                <td>第<input type="button" class="currentPage" value="1" readonly="readonly">页</td>
+                <td>共<input type="button" class="totalPage" value="10" readonly="readonly">页</td>
+                <td>&nbsp;|&nbsp;<button class="nextPage" type="button" onclick="page_click(this)">下一页</button></td>
+                <td>&nbsp;|&nbsp;<button class="lastPage" type="button" onclick="page_click(this)">尾页</button></td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+    <div id="running_job" style="display: none">
+    hhhhhhhhhhhhhhhhhhhhhh
+    </div>
+</div>
+
+
+
+<div id="right" >
+    sadasdsadsad
+</div>
+
+<script type="text/javascript">
+
+    var date = {{ all_j|safe }};
+    {#window.alert(date.replace(/\{|\>|\/|\?]/g, '').replace(/\}|\>|\/|\?]/g, '').replace('[','{').replace(']','}'));#}
+    {#var ddd = date.replace(/\{|\>|\/|\?]/g, '').replace(/\}|\>|\/|\?]/g, '').replace('[','{').replace(']','}');#}
+    {#var obj = JSON.parse('{ddd:fff,sda:asd}');#}
+    {#document.getElementById("right").innerHTML=obj;#}
+    window.alert("ffffffffffffffff");
+    window.alert(date[1])
+</script>
+
+</body>
+</html>

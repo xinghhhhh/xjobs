@@ -3,17 +3,13 @@ import configparser
 from sqlalchemy import create_engine
 import pymysql
 from sqlalchemy.orm import sessionmaker
+import common.config.get_config as config
 
-
-
-config = configparser.ConfigParser()
-config.read("D:\\code\\python\\xjobs\\common\\config\\common.ini", encoding="utf-8")
-
-HOST=config.get("mysql", "database_ip")
-USER=config.get("mysql", "database_user")
-PORT=config.get("mysql", "database_port")
-PASSWD=config.get("mysql", "database_password")
-DATABASE=config.get("mysql", "database_name")
+HOST=config.get_config("mysql", "database_ip")
+USER=config.get_config("mysql", "database_user")
+PORT=config.get_config("mysql", "database_port")
+PASSWD=config.get_config("mysql", "database_password")
+DATABASE=config.get_config("mysql", "database_name")
 
 mydb = mysql.connector.connect(
       host=HOST,
@@ -41,7 +37,7 @@ class mysql():
 
 
 engine = create_engine(
-    "mysql+pymysql://root:root@127.0.0.1:3306/xjobs",
+    "mysql+pymysql://"+USER+":root@127.0.0.1:3306/xjobs",
     max_overflow=0,
     pool_size=5,
     pool_timeout=30,
@@ -53,11 +49,11 @@ engine = create_engine(
 # cursor = conn.cursor()
 # cursor.execute("select * from xjobs_jobinfo")
 # rs = cursor.fetchall()
-class mysqlw():
-    def get_seesion():
-        DBsession = sessionmaker(bind=engine)
-        seesion = DBsession()
-        return seesion
+
+def get_seesion():
+    DBsession = sessionmaker(bind=engine)
+    seesion = DBsession()
+    return seesion
 
 
 

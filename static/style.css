@@ -1,0 +1,39 @@
+#top{
+    background-color: gainsboro;
+    height: 150px;
+    top: 0px;
+    color: red;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+}
+
+#left{
+    background-color: azure;
+    width: 420px;
+    top: 160px;
+    bottom: 0px;
+    float: left;
+    position: absolute;
+    left: 0px;
+}
+#right{
+    background-color: blanchedalmond;
+    position: absolute;
+    left: 430px;
+    top: 160px;
+    bottom: 0px;
+    right: 0px;
+    
+}
+
+nav li{
+ display: inline;
+ width: 24%;
+ text-decoration: none;
+ padding: 15px;
+ }
+li:hover{
+ background-color: lightblue;
+ }
+

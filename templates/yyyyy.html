@@ -26,6 +26,7 @@
 
 <body>
     <svg width="960" height="600"></svg>
+    <button name="ddddd" onclick="ff()"></button>
     <script src="../static/d3.v5.min.js"></script>
     <script src="../static/dagre-d3.min.js"></script>
     <script>
@@ -33,32 +34,38 @@
             nodes: [{
                     id: 0,
                     label: "流动人员",
-                    shape: "rect"
+                    shape: "rect",
+                    name: "dddddddddddddddd"
                 },
                 {
                     id: 1,
                     label: "安全筛查",
-                    shape: "rect"
+                    shape: "rect",
+                    name: "tttt"
                 },
                 {
                     id: 2,
                     label: "热像仪人体测温筛查",
-                    shape: "diamond"
+                    shape: "diamond",
+                    name: "ertw"
                 },
                 {
                     id: 3,
                     label: "人工复测",
-                    shape: "diamond"
+                    shape: "diamond",
+                    name:"hcfg"
                 },
                 {
                     id: 4,
                     label: "快速通过",
-                    shape: "rect"
+                    shape: "rect",
+                    name: "rety"
                 },
                 {
                     id: 5,
                     label: "紧急处理",
-                    shape: "rect"
+                    shape: "rect",
+                    name: "asda1"
                 }
             ],
             edges: [{
@@ -76,11 +83,7 @@
                     target: 4,
                     label: "正常"
                 },
-                {
-                    source: 2,
-                    target: 3,
-                    label: "不正常"
-                },
+
                 {
                     source: 3,
                     target: 5,
@@ -90,6 +93,11 @@
                     source: 3,
                     target: 4,
                     label: "正常"
+                },
+                {
+                    source: 2,
+                    target: 3,
+                    label: "不正常"
                 }
             ]
         }
@@ -113,7 +121,8 @@
                 //节点样式
                 style: "fill:#faf;stroke:#faf",
                 //节点标签样式
-                labelStyle: "fill:#afa"
+                labelStyle: "fill:#afa",
+                id:item.name
             })
         })
         dataset.edges.forEach(item => {
@@ -188,6 +197,13 @@
         var xCenterOffset = (svg.attr('width') - g.graph().width) / 2;
         svgGroup.attr('transform', 'translate(' + xCenterOffset + ', 20)');
         svg.attr('height', g.graph().height + 40);
+
+        var id_nam = 'dddddddddddddddd';
+
+        function ff(){
+            d3.select("#"+id_nam).select("rect").style("fill","red");
+        };
+
     </script>
 </body>
 

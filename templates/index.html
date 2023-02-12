@@ -26,7 +26,7 @@ function information_display(page) {
     }else {
         var end = all_count-1;
     };
-    var innerHT = '<table border="1"> <tr> <td>任务名</td><td>状态</td> </tr>';
+    var innerHT = '<table id="container" <thead id="c_thead"> <tr> <td>任务名</td><td>状态</td> </tr> </thead> <tbody id="c_tbody">';
     for (var i=begin;i<=end;i++){
         innerHT +='<tr><td>';
         innerHT += all_jobs[i][0];
@@ -34,7 +34,7 @@ function information_display(page) {
         innerHT += all_jobs[i][1];
         innerHT +='</td></tr>';
     };
-    innerHT += '</table>';
+    innerHT += '</tbody> </table>';
     informationDisplay.innerHTML = innerHT;
 }
 
@@ -43,6 +43,24 @@ window.onload = function () {
     document.querySelector(".totalPage").value=totalPage;
     information_display(1);
 }
+
+function highlight(){
+        var trs = document.querySelector('#c_tbody').querySelectorAll("tr");
+// 2. 利用循环绑定注册事件
+for (var i = 0; i < trs.length; i++) {
+    // 3. 鼠标经过事件 onmouseover 当鼠标经过的时候
+    // 给表格添加一个背景属性
+    trs[i].onmouseover = function() {
+            this.className = 'bg';
+        }
+        // 4. 鼠标离开事件 onmouseout
+    trs[i].onmouseout = function() {
+        this.className = '';
+    }
+}
+}
+
+
 //上一页、下一页，首页和尾页的单击触发事件
 function page_click(item) {
     console.log(item);
@@ -75,9 +93,40 @@ function page_click(item) {
         console.log(item.className);
         document.querySelector(".currentPage").value=totalPage;
         information_display(totalPage)
-    }
+    };
+    highlight()
 }
+
+
+
+
 </script>
+    <style>
+        table{
+            width: 400px;
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .ui-tab #c_thead tr {
+            height: 300px;
+            font-size: 30px;
+            text-align: center;
+            background-color: skyblue;
+        }
+        tbody tr {
+            height: 30px;
+        }
+        .ui-tab tbody td{
+            border-bottom: 1px solid #d7d7d7;
+            font-size: 14px;
+        }
+
+        .bg {
+            background-color: pink;
+        }
+    </style>
+
 <title>菜鸟</title>
 </head>
 <body>
@@ -135,6 +184,7 @@ sasdasdas
     <div id="running_job" style="display: none">
     hhhhhhhhhhhhhhhhhhhhhh
     </div>
+
 </div>
 
 

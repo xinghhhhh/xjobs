@@ -56,7 +56,8 @@ def get_class_by_module(module,class_name):
 #         print(cls.run("46546"))
 
 def get_class_by_name(class_name):
-    module_name = class_name[:class_name.rfind('.')]
+    jobs_path = configx.get_config("common", "jobs_path").replace('\\', '.').replace('/', '.')
+    module_name = jobs_path + '.' + class_name[:class_name.rfind('.')]
     class_name = class_name[class_name.rfind('.') + 1:]
     path = configx.get_config("common", "project_path_win") +"\\"+ configx.get_config("common", "project_name")
     module_file = path +"\\"+ module_name.replace('.', '\\') + '.py'

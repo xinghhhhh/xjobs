@@ -14,7 +14,7 @@ class work1(rootJob.xjobs):
 class work2(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work1'
+    RELY = 'day.today_work.work1'
     VERSION = "1.0"
     def run(session, today_date):
         print("work2 开始")
@@ -24,7 +24,7 @@ class work2(rootJob.xjobs):
 class work3(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -34,7 +34,7 @@ class work3(rootJob.xjobs):
 class work4(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -44,7 +44,7 @@ class work4(rootJob.xjobs):
 class work5(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -54,7 +54,7 @@ class work5(rootJob.xjobs):
 class work6(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -63,7 +63,7 @@ class work6(rootJob.xjobs):
 class work7(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -72,7 +72,7 @@ class work7(rootJob.xjobs):
 class work8(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -81,7 +81,7 @@ class work8(rootJob.xjobs):
 class work9(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2,jsyh.jobs.day.today_work.work5'
+    RELY = 'day.today_work.work2,day.today_work.work5'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")
@@ -90,7 +90,7 @@ class work9(rootJob.xjobs):
 class work10(rootJob.xjobs):
     JOB_NAME = __qualname__
     REPEAT_FLAG = "D"
-    RELY = 'jsyh.jobs.day.today_work.work2'
+    RELY = 'day.today_work.work2'
     VERSION = "1.0"
     def run(session, today_date):
         print("work3 开始")

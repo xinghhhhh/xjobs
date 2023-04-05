@@ -1,6 +1,6 @@
 #top{
-    background-color: gainsboro;
-    height: 150px;
+    background-color: #34495e;
+    height: 60px;
     top: 0px;
     color: red;
     position: absolute;
@@ -9,31 +9,105 @@
 }
 
 #left{
-    background-color: azure;
-    width: 420px;
-    top: 160px;
+    background-color: #ecf0f1;
+    width: 360px;
+    top: 60px;
     bottom: 0px;
     float: left;
     position: absolute;
     left: 0px;
 }
 #right{
-    background-color: blanchedalmond;
+    background-color: transparent;
     position: absolute;
-    left: 430px;
-    top: 160px;
+    left: 360px;
+    top: 60px;
     bottom: 0px;
     right: 0px;
     
 }
-
+nav{
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 100%;
+    background-color: #ecf0f1;
+}
 nav li{
  display: inline;
- width: 24%;
- text-decoration: none;
- padding: 15px;
+width: 180px;
+    height: 40px;
+    list-style: none;
+    font-size: 18px;
+    text-align: center;
+    line-height: 40px;
  }
+#a_page{
+position: absolute;
+    left: 0;
+    top: 0;
+}
+#t_page{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
 li:hover{
- background-color: lightblue;
+ background-color: #ecf0f1;
  }
 
+#all_job{
+}
+
+.search_box{
+    top: 0;
+    height: 20px;
+    width: 230px;
+}
+.btn{
+
+}
+
+
+table{
+    width: 340px;
+    margin: 10px auto;
+    border-collapse: collapse;
+}
+
+tbody tr {
+    height: 30px;
+}
+.ui-tab-all tbody td{
+    border: 1px solid #d7d7d7;
+    #text-overflow: ellipsis;
+    #overflow: auto;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.ui-tab-today tbody td{
+    border: 1px solid #d7d7d7;
+    #text-overflow: ellipsis;
+    #overflow: auto;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.bg {
+    background-color: lightblue;
+}
+
+#ps{
+    height: 30px;
+}
+#ps div{
+    position: absolute;
+    height: 25px;
+    width: 50px;
+    background-color: aqua;
+    display: inline-flex;
+    margin: 5px;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 25px;
+}

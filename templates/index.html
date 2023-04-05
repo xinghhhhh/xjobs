@@ -4,130 +4,32 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}" />
 <script type="text/javascript" src="{{ url_for('static', filename='left.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='d3.v5.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='dagre-d3.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='graph.js') }}"></script>
 
 <script>
     var all_jobs = {{ all_jobs | safe }};
     var today_jobs = {{ today_jobs | safe }};
-    var running_jobs = {{ running_jobs | safe}};
     let all_count = all_jobs.length;
     let today_count = today_jobs.length;
-    let running_count = running_jobs.length;
-    let totalPage = Math.trunc((all_count/5)+1); //一共多少页
-    let today_Page = Math.trunc((today_count/5)+1);
-    let running_Page = Math.trunc((running_count/5)+1);
-
-//前端获取后台数据并呈现在<div class="ui-tab">中
-function information_display(page) {
-    const informationDisplay = document.querySelector(".ui-tab");
-    var begin =page*5-5;
-    var end = 0;
-    if (page*5 < all_count){
-        var end = page*5-1;
-    }else {
-        var end = all_count-1;
-    };
-    var innerHT = '<table id="container" <thead id="c_thead"> <tr> <td>任务名</td><td>状态</td> </tr> </thead> <tbody id="c_tbody">';
-    for (var i=begin;i<=end;i++){
-        innerHT +='<tr><td>';
-        innerHT += all_jobs[i][0];
-        innerHT +='</td><td>';
-        innerHT += all_jobs[i][1];
-        innerHT +='</td></tr>';
-    };
-    innerHT += '</tbody> </table>';
-    informationDisplay.innerHTML = innerHT;
-}
+    let totalPage = Math.trunc((all_count/10)+1); //一共多少页
+    let today_Page = Math.trunc((today_count/10)+1);
 
 //初始化页面加载
 window.onload = function () {
-    document.querySelector(".totalPage").value=totalPage;
-    information_display(1);
+    document.querySelector(".totalPage_all").value=totalPage;
+    document.querySelector(".totalPage_today").value=today_Page
+    information_display_today(1);
+    information_display_all(1);
+    document.getElementById("a_page").onclick();
+    highlight_today();
+    highlight_all();
 }
-
-function highlight(){
-        var trs = document.querySelector('#c_tbody').querySelectorAll("tr");
-// 2. 利用循环绑定注册事件
-for (var i = 0; i < trs.length; i++) {
-    // 3. 鼠标经过事件 onmouseover 当鼠标经过的时候
-    // 给表格添加一个背景属性
-    trs[i].onmouseover = function() {
-            this.className = 'bg';
-        }
-        // 4. 鼠标离开事件 onmouseout
-    trs[i].onmouseout = function() {
-        this.className = '';
-    }
-}
-}
-
-
-//上一页、下一页，首页和尾页的单击触发事件
-function page_click(item) {
-    console.log(item);
-    let pageNumber=0;
-    if (item.className == "firstPage"){
-        console.log(item.className);
-        //pageNumber = document.querySelector(".currentPage").value;
-        document.querySelector(".currentPage").value=1;
-        information_display(1)
-    }
-    else if (item.className == "beforePage") {
-        console.log(item.className);
-        pageNumber = document.querySelector(".currentPage").value;
-        if (pageNumber > 1) {
-            document.querySelector(".currentPage").value=Number(pageNumber)-1;
-            information_display(Number(pageNumber)-1)
-        }
-    }
-    else if (item.className == "nextPage") {
-        console.log(item.className);
-        pageNumber = document.querySelector(".currentPage").value;
-        console.log(pageNumber);
-        console.log(typeof(pageNumber));
-        if (pageNumber < totalPage) {
-            let n=document.querySelector(".currentPage").value=Number(pageNumber)+1;
-            information_display(Number(pageNumber)+1)
-        }
-    }
-    else {
-        console.log(item.className);
-        document.querySelector(".currentPage").value=totalPage;
-        information_display(totalPage)
-    };
-    highlight()
-}
-
-
-
-
 </script>
-    <style>
-        table{
-            width: 400px;
-            margin: 10px auto;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        .ui-tab #c_thead tr {
-            height: 300px;
-            font-size: 30px;
-            text-align: center;
-            background-color: skyblue;
-        }
-        tbody tr {
-            height: 30px;
-        }
-        .ui-tab tbody td{
-            border-bottom: 1px solid #d7d7d7;
-            font-size: 14px;
-        }
 
-        .bg {
-            background-color: pink;
-        }
-    </style>
 
-<title>菜鸟</title>
+<title>xhhhh</title>
 </head>
 <body>
 <div id="top">
@@ -139,70 +41,197 @@ sasdasdas
      <ul>
          <li class="act" id="a_page" onclick="all_job()">全部任务</li>
          <li id="t_page" onclick="today_job()">今日任务</li>
-         <li id="r_page" onclick="running_job()">正在运行</li>
      </ul>
     </nav>
-
-    <div id="all_job" style="display: block">
-    <div class="ui-tab">
+    <div style="padding: 10px">
+    <div id="all_job" style="display: block;background-color: #ecf0f1" >
+        <div id="search">
+            <input type="text" placeholder="search..." value="" class="search_box">
+            <button type="button" class="btn">搜索</button>
+            <button type="button" class="btn">刷新</button>
+        </div>
+    <div class="ui-tab-all">
         <!-- 具体消息内容 -->
     </div>
     <div class="paging">
         <!-- 分页布局-->
         <table>
             <tr class="page-font">
-                <td><button class="firstPage" type="button" onclick="page_click(this)">首页</button>&nbsp;|&nbsp;</td>
-                <td><button class="beforePage" type="button" onclick="page_click(this)">上一页</button>&nbsp;|&nbsp;</td>
-                <td>第<input type="button" class="currentPage" value="1" readonly="readonly">页</td>
-                <td>共<input type="button" class="totalPage" value="10" readonly="readonly">页</td>
-                <td>&nbsp;|&nbsp;<button class="nextPage" type="button" onclick="page_click(this)">下一页</button></td>
-                <td>&nbsp;|&nbsp;<button class="lastPage" type="button" onclick="page_click(this)">尾页</button></td>
+                <td><button class="firstPage" type="button" onclick="page_click_all(this)">首页</button></td>
+                <td><button class="beforePage" type="button" onclick="page_click_all(this)">上一页</button></td>
+                <td>第<input type="button" class="currentPage" value="1" readonly="readonly" style="border: none">页</td>
+                <td>共<input type="button" class="totalPage_all" value="10" readonly="readonly" style="border: none">页</td>
+                <td><button class="nextPage" type="button" onclick="page_click_all(this)">下一页</button></td>
+                <td><button class="lastPage" type="button" onclick="page_click_all(this)">尾页</button></td>
             </tr>
         </table>
     </div>
     </div>
 
-    <div id="today_job" style="display: none">
-    <div class="ui-tab">
+    <div id="today_job" style="display: block">
+        <div id="search">
+            <input type="text" placeholder="search..." value="" class="search_box">
+            <button type="button" class="btn">搜索</button>
+            <button type="button" class="btn">刷新</button>
+        </div>
+    <div class="ui-tab-today">
         <!-- 具体消息内容 -->
     </div>
     <div class="paging">
         <!-- 分页布局-->
         <table>
             <tr class="page-font">
-                <td><button class="firstPage" type="button" onclick="page_click(this)">首页</button>&nbsp;|&nbsp;</td>
-                <td><button class="beforePage" type="button" onclick="page_click(this)">上一页</button>&nbsp;|&nbsp;</td>
-                <td>第<input type="button" class="currentPage" value="1" readonly="readonly">页</td>
-                <td>共<input type="button" class="totalPage" value="10" readonly="readonly">页</td>
-                <td>&nbsp;|&nbsp;<button class="nextPage" type="button" onclick="page_click(this)">下一页</button></td>
-                <td>&nbsp;|&nbsp;<button class="lastPage" type="button" onclick="page_click(this)">尾页</button></td>
+                <td><button class="firstPage" type="button" onclick="page_click_today(this)">首页</button></td>
+                <td><button class="beforePage" type="button" onclick="page_click_today(this)">上一页</button></td>
+                <td>第<input type="button" class="currentPage_today" value="1" readonly="readonly" style="border: none">页</td>
+                <td>共<input type="button" class="totalPage_today" value="10" readonly="readonly" style="border: none">页</td>
+                <td><button class="nextPage" type="button" onclick="page_click_today(this)">下一页</button></td>
+                <td><button class="lastPage" type="button" onclick="page_click_today(this)">尾页</button></td>
             </tr>
         </table>
     </div>
     </div>
-
-    <div id="running_job" style="display: none">
-    hhhhhhhhhhhhhhhhhhhhhh
     </div>
-
 </div>
 
 
 
 <div id="right" >
-    sadasdsadsad
+<div id="ps">
+    <div id="status_1" style="background-color: white;border-style:solid;border-color:#E5E5E5;height: 23px;width: 48px"></div><div style="left: 55px;width: auto;background-color: transparent">未运行</div>
+    <div id="status_2" style="left: 120px"></div><div style="left: 175px;width: auto;background-color: transparent">运行中</div>
+    <div id="status_3" style="left: 240px;background-color: #B8FBA1"></div><div style="left: 295px;width: auto;background-color: transparent">成功</div>
+    <div id="status_4" style="left: 360px;background-color: #FFC6AF"></div><div style="left: 415px ;width: auto;background-color: transparent">失败</div>
+    <div id="status_5" style="left: 480px;background-color: #E5E5E5"></div><div style="left: 535px;width: auto;background-color: transparent">非今日任务</div>
 </div>
+<svg width=100% height="100%"></svg>
 
-<script type="text/javascript">
+</div>
+<script>
+        let dataset = {{ graph_a |safe }};
+        // 创建 graph 对象
+        let g = new dagreD3.graphlib.Graph();
+        g.setGraph({
+            rankdir: 'LR',
+            align: 'DL',
+            nodesep: 100,
+            edgesep: 100,
+            ranksep: 50,
+            marginx: 50,
+            marginy: 100,
+        });
+        dataset.nodes.forEach(item => {
+            var color='white'
+            var frame='transparent'
+            if (item.today_flag == "Y"){
+                if (item.status=="SUCCESS"){
+                    color = '#B8FBA1'
+                }else if (item.status=='RUNNING'){
+                    color='#AEFEF7'
+                }else if (item.status=='FAILED'){
+                    color='#FFC6AF'
+                }else {
+                    color='white'
+                    frame='#E5E5E5'
+                }
+            }else {
+                color = '#E5E5E5'
+            }
+            g.setNode(item.id, {
+                //节点标签
+                label: item.label,
+                //节点形状
+                shape: item.shape,
+                //节点样式
+                style: "fill:"+ color +";stroke:"+frame+";stroke-width:2px;rx:5;ry:5",
+                //节点标签样式
+                labelStyle: "fill:black",
+                id:item.name
+            })
+        })
+        dataset.edges.forEach(item => {
+            g.setEdge(item.source, item.target, {
+                //边标签
+                label: item.label,
+                //边样式
+                style: "fill:#fff;stroke:black;stroke-width:2px",
+                labelStyle: "fill:#1890ff",
+                arrowhead: "vee",
+                arrowheadStyle: "fill:black"
+            })
+        })
+        // 创建渲染器
+        let render = new dagreD3.render();
 
-    var date = {{ all_j|safe }};
-    {#window.alert(date.replace(/\{|\>|\/|\?]/g, '').replace(/\}|\>|\/|\?]/g, '').replace('[','{').replace(']','}'));#}
-    {#var ddd = date.replace(/\{|\>|\/|\?]/g, '').replace(/\}|\>|\/|\?]/g, '').replace('[','{').replace(']','}');#}
-    {#var obj = JSON.parse('{ddd:fff,sda:asd}');#}
-    {#document.getElementById("right").innerHTML=obj;#}
-    window.alert("ffffffffffffffff");
-    window.alert(date[1])
+        // 选择 svg 并添加一个g元素作为绘图容器.
+        let svg = d3.select('svg')
+        let svgGroup = svg.append('g');
+
+        // 在绘图容器上运行渲染器生成流程图.
+        render(svgGroup, g);
+
+        // 建立拖拽缩放
+        let zoom = d3.zoom()
+            .on("zoom", function () {
+                svgGroup.attr("transform", d3.event.transform);
+            });
+        svg.call(zoom);
+
+        var styleTooltip = function (name) {
+            return "<p class='name'>" + name + "</p>";
+        };
+
+        //创建提示框
+        function createTooltip() {
+            return d3.select('body')
+                .append('div')
+                .classed('tooltip', true)
+                .style('opacity', 0)
+                .style('display', 'none');
+        };
+        let tooltip = createTooltip();
+        //tooltip显示
+        function tipVisible(textContent) {
+            tooltip.transition()
+                .duration(400)
+                .style('opacity', 0.9)
+                .style('display', 'block');
+            tooltip.html(textContent)
+                .style('left', (d3.event.pageX + 15) + 'px')
+                .style('top', (d3.event.pageY + 15) + 'px');
+        }
+        //tooltip隐藏
+        function tipHidden() {
+            tooltip.transition()
+                .duration(400)
+                .style('opacity', 0)
+                .style('display', 'none');
+        }
+
+        //鼠标悬停显示隐藏tooltip
+        svgGroup.selectAll("g.node")
+        .on("mouseover", function (v) {
+            tipVisible(g.node(v).label);
+        })
+        .on("mouseout", function (v) {
+            tipHidden();
+        })
+
+        // Center the graph
+        var xCenterOffset = (svg.attr('width') - g.graph().width) / 2;
+        svgGroup.attr('transform', 'translate(' + xCenterOffset + ', 20)');
+        svg.attr('height', g.graph().height + 40);
+
+        var id_nam = 'dddddddddddddddd';
+
+        function ff(){
+            d3.select("#"+id_nam).select("rect").style("fill","red");
+        };
+
 </script>
+
+
+
 
 </body>
 </html>

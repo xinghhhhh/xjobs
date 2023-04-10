@@ -1,5 +1,4 @@
 from multiprocessing import freeze_support
-
 import common.tools.db as db
 import common.tools.init_tool as tools
 import common.models.rootJob as model

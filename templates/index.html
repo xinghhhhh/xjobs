@@ -8,32 +8,11 @@
 <script type="text/javascript" src="{{ url_for('static',filename='dagre-d3.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='graph.js') }}"></script>
 
-<script>
-    var all_jobs = {{ all_jobs | safe }};
-    var today_jobs = {{ today_jobs | safe }};
-    let all_count = all_jobs.length;
-    let today_count = today_jobs.length;
-    let totalPage = Math.trunc((all_count/10)+1); //一共多少页
-    let today_Page = Math.trunc((today_count/10)+1);
-
-//初始化页面加载
-window.onload = function () {
-    document.querySelector(".totalPage_all").value=totalPage;
-    document.querySelector(".totalPage_today").value=today_Page
-    information_display_today(1);
-    information_display_all(1);
-    document.getElementById("a_page").onclick();
-    highlight_today();
-    highlight_all();
-}
-</script>
-
-
 <title>xhhhh</title>
 </head>
 <body>
 <div id="top">
-sasdasdas
+xxxx
 </div>
 
 <div id="left">
@@ -101,14 +80,43 @@ sasdasdas
     <div id="status_1" style="background-color: white;border-style:solid;border-color:#E5E5E5;height: 23px;width: 48px"></div><div style="left: 55px;width: auto;background-color: transparent">未运行</div>
     <div id="status_2" style="left: 120px"></div><div style="left: 175px;width: auto;background-color: transparent">运行中</div>
     <div id="status_3" style="left: 240px;background-color: #B8FBA1"></div><div style="left: 295px;width: auto;background-color: transparent">成功</div>
-    <div id="status_4" style="left: 360px;background-color: #FFC6AF"></div><div style="left: 415px ;width: auto;background-color: transparent">失败</div>
-    <div id="status_5" style="left: 480px;background-color: #E5E5E5"></div><div style="left: 535px;width: auto;background-color: transparent">非今日任务</div>
+    <div id="status_4" style="left: 360px;background-color: #FFEBAF"></div><div style="left: 415px ;width: auto;background-color: transparent">失败</div>
+    <div id="status_4" style="left: 480px;background-color: #FFC6AF"></div><div style="left: 535px ;width: auto;background-color: transparent">错误</div>
+    <div id="status_5" style="left: 600px;background-color: #E5E5E5"></div><div style="left: 655px;width: auto;background-color: transparent">非今日任务</div>
+
+
 </div>
 <svg width=100% height="100%"></svg>
 
 </div>
 <script>
-        let dataset = {{ graph_a |safe }};
+    init_json = {{ init_josn | safe }};
+    jobs_json = JSON.stringify(init_json);
+    all_jobs=[];
+    today_jobs=[];
+    for (let item in init_json['nodes']) {
+        all_jobs.push([[init_json['nodes'][item]['id']],init_json['nodes'][item]['repeat_flag']])
+        if (init_json['nodes'][item]['today_flag'] == 'Y'){
+            today_jobs.push([[init_json['nodes'][item]['id']],init_json['nodes'][item]['status']])
+        }
+    }
+    let all_count = all_jobs.length;
+    let today_count = today_jobs.length;
+    let totalPage = Math.trunc((all_count/10)+1); //一共多少页
+    let today_Page = Math.trunc((today_count/10)+1);
+
+//初始化页面加载
+window.onload = function () {
+    document.querySelector(".totalPage_all").value=totalPage;
+    document.querySelector(".totalPage_today").value=today_Page
+    information_display_today(1);
+    information_display_all(1);
+    document.getElementById("a_page").onclick();
+    highlight_today();
+    highlight_all();
+}
+
+        let dataset = init_json;
         // 创建 graph 对象
         let g = new dagreD3.graphlib.Graph();
         g.setGraph({
@@ -150,14 +158,18 @@ sasdasdas
             })
         })
         dataset.edges.forEach(item => {
+            var ccc="black"
+            if (item.source_flag=="N" || item.target_flag =="N" ){
+                ccc = "#E5E5E5"
+            }
             g.setEdge(item.source, item.target, {
                 //边标签
                 label: item.label,
                 //边样式
-                style: "fill:#fff;stroke:black;stroke-width:2px",
-                labelStyle: "fill:#1890ff",
+                style: "fill:transparent;stroke:"+ccc+";stroke-width:2px",
+                labelStyle: "fill:black",
                 arrowhead: "vee",
-                arrowheadStyle: "fill:black"
+                arrowheadStyle: "fill:"+ccc+""
             })
         })
         // 创建渲染器

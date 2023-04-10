@@ -5,46 +5,33 @@ import json
 app = Flask(__name__)
 
 session =db.get_seesion()
-all_jobs = session.execute("SELECT job_name,repeat_flag,status,today_flag from xjobs_job")
-today_jobs = session.execute("SELECT job_name,status from xjobs_job where today_flag='Y'")
-all_jobs_rely = session.execute("SELECT job_name,rely from xjobs_job").all()
-session.commit()
-a_jobs=all_jobs.all()
-t_jobs=today_jobs.all()
 
+def web_init():
+    all_jobs = session.execute("SELECT job_name,repeat_flag,status,today_flag,count,rely from xjobs_job").all()
+    session.commit()
+    tmp_dict={}
+    for job in all_jobs:
+        tmp_dict[job[0]] = job[3]
 
-def covert_to_list(target):
-    list = []
-    for item in target:
-        tem = []
-        for i in item:
-            tem.append(i)
-        list.append(tem)
-    return list
+    def get_flag(job_name):
+        if tmp_dict[job_name] == 'Y':
+            return 'Y'
+        else:
+            return 'N'
+    web_json = {"nodes": [], "edges": []}
+    for item in all_jobs:
+        web_json["nodes"].append({"id": item[0], "label": item[0], "repeat_flag": item[1], "status": item[2], "today_flag": item[3], "count": item[4]})
+        if item[5] != '':
+            rely_list = item[5].split(',')
+            for source in rely_list:
+                web_json["edges"].append({"source": source, "target": item[0], "source_flag": get_flag(source), "target_flag": get_flag(item[0])})
+    return web_json
 
-
-all_j = covert_to_list(a_jobs)
-today_j = covert_to_list(t_jobs)
-
-
-test_to_json = {"nodes":[],"edges":[]}
-for job in all_j:
-    test_to_json["nodes"].append({"id":job[0], "label": job[0], "shape": "rect", "status": job[2], "today_flag": job[3]})
-
-
-
-for rely in all_jobs_rely:
-    if rely[1] != '':
-        tmp_list = rely[1].split(',')
-        for rely_c in tmp_list:
-            test_to_json["edges"].append({"source": rely_c, "target": rely[0]})
-    else:
-        continue
-print(test_to_json)
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return render_template("index.html", all_jobs=all_j, today_jobs=today_j, graph_a=test_to_json)
+    init_josn = web_init()
+    return render_template("index.html", init_josn=init_josn)
 
 @app.route('/tet')
 def tet():

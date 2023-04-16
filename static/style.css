@@ -8,6 +8,10 @@
     left: 0px;
 }
 
+#top div{
+    display: inline-block;
+}
+
 #left{
     background-color: #ecf0f1;
     width: 360px;

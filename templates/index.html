@@ -7,13 +7,25 @@
 <script type="text/javascript" src="{{ url_for('static',filename='d3.v5.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='dagre-d3.min.js') }}"></script>
 <script type="text/javascript" src="{{ url_for('static',filename='graph.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static',filename='tools.js') }}"></script>
 
 <title>xhhhh</title>
 </head>
 <body>
 <div id="top">
-xxxx
+    <div style="width: 360px;font-size: 40px;position: relative;left: 20px">xxxxxx</div>
+    <div style="text-align: left;line-height: 60px;position: absolute;top: 0px; width: 400px">
+        批量日期: <p id='batch_date' style="display: inline">YYYYMMDD</p> &nbsp;&nbsp;
+        批量状态: <p id='batch_status' style="display: inline">UNKNOWN</p>
+    </div>
+    <div style="position: absolute;left: 760px;top: 20px">
+        <button type="button" onclick="stop_batch(this)">暂停批量</button>
+        <button type="button" onclick="start_batch(this)">继续运行</button>
+        <button type="button" onclick="change_batch_date(this)">切换日期</button>
+        <button type="button" onclick="run_jobs(this)">手动执行</button>
+    </div>
 </div>
+
 
 <div id="left">
     <nav id="nav">
@@ -91,6 +103,7 @@ xxxx
 </div>
 <script>
     init_json = {{ init_josn | safe }};
+    global_info = {{ global_dict | safe }};
     jobs_json = JSON.stringify(init_json);
     all_jobs=[];
     today_jobs=[];
@@ -114,6 +127,7 @@ window.onload = function () {
     document.getElementById("a_page").onclick();
     highlight_today();
     highlight_all();
+    update_status(global_info);
 }
 
         let dataset = init_json;
@@ -162,6 +176,9 @@ window.onload = function () {
             if (item.source_flag=="N" || item.target_flag =="N" ){
                 ccc = "#E5E5E5"
             }
+            if (item.line_style=="indirect" ){
+                ccc = "#00BCD4"
+            }
             g.setEdge(item.source, item.target, {
                 //边标签
                 label: item.label,
@@ -192,7 +209,7 @@ window.onload = function () {
         var styleTooltip = function (name) {
             return "<p class='name'>" + name + "</p>";
         };
-
+/*
         //创建提示框
         function createTooltip() {
             return d3.select('body')
@@ -203,6 +220,7 @@ window.onload = function () {
         };
         let tooltip = createTooltip();
         //tooltip显示
+
         function tipVisible(textContent) {
             tooltip.transition()
                 .duration(400)
@@ -228,7 +246,7 @@ window.onload = function () {
         .on("mouseout", function (v) {
             tipHidden();
         })
-
+*/
         // Center the graph
         var xCenterOffset = (svg.attr('width') - g.graph().width) / 2;
         svgGroup.attr('transform', 'translate(' + xCenterOffset + ', 20)');

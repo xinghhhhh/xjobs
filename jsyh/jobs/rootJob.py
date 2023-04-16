@@ -10,6 +10,7 @@ class xjobs():
     START_TIME = None
     END_TIME = None
     RELY = ''
+    INDIRECT_RELY = ''
     VERSION = '1.0'
 
     def run(self, session, todat_date):

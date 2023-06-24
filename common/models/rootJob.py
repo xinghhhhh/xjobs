@@ -1,12 +1,13 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer, DateTime, Date
+#from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
 
 class xjobs(Base):
     __tablename__ = 'xjobs_job'
-    # __table_args__ = {'schema':'ODS'}
+    __table_args__ = {'schema':'ODS'}
 
     JOB_NAME = Column(String(100), primary_key=True)
     STATUS = Column(String(10), default='')
@@ -25,7 +26,7 @@ class xjobs(Base):
 
 class xjobs_hst(Base):
     __tablename__ = 'xjobs_jobs_hst'
-    # __table_args__ = {'schema':'ODS'}
+    __table_args__ = {'schema':'ODS'}
     ID = Column(Integer, primary_key=True, autoincrement=True)
     BATCH_DATE = Column(Date)
     JOB_NAME = Column(String(100))
@@ -45,7 +46,7 @@ class xjobs_hst(Base):
 
 class batch_hst(Base):
     __tablename__ = 'xjobs_batch_hst'
-    # __table_args__ = {'schema':'ODS'}
+    __table_args__ = {'schema':'ODS'}
 
     BATCH_DATE = Column(Date, primary_key=True)
     START_TIME = Column(DateTime)
@@ -55,5 +56,8 @@ class batch_hst(Base):
 
 
 # 初始化表
-# import common.tools.db as db
-# Base.metadata.create_all(db.engine)
+import common.tools.db as db
+
+#session = db.get_seesion()
+
+Base.metadata.create_all(db.engine)
